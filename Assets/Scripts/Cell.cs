@@ -6,6 +6,7 @@ public class Cell : MonoBehaviour
 {
     public bool alive;
     public bool nxtGenAlive;
+    [SerializeField] public  int neighbors;
     SpriteRenderer spriteRenderer;
 
     public void UpdateStatus()
@@ -15,41 +16,41 @@ public class Cell : MonoBehaviour
         spriteRenderer.enabled = alive;
     }
 
-    public void GetNeighborsCount(int x, int y)
-    {
-        int col = GameOfLife.instance.numberOfColums;
-        int row = GameOfLife.instance.numberOfRows;
-        int aliveNeighborsCount = 0;
+    //public void GetNeighborsCount(int x, int y)
+    //{
+    //    int col = GameOfLife.instance.numberOfColums;
+    //    int row = GameOfLife.instance.numberOfRows;
+    //    int aliveNeighborsCount = 0;
 
-        for (int i = x - 1; i <= x + 1; i++)
-        {
-            for (int j = y - 1; j <= y + 1; j++)
-            {
-                //Skip me, ie the current cell.
-                if (i == x && j == y)
-                    continue;
+    //    for (int i = x - 1; i <= x + 1; i++)
+    //    {
+    //        for (int j = y - 1; j <= y + 1; j++)
+    //        {
+    //            //Skip me, ie the current cell.
+    //            if (i == x && j == y)
+    //                continue;
 
-                if (i >= 0 && i < col && j >= 0 && j < row) //Issue
-                    aliveNeighborsCount++;
-            }
-        }
+    //            if (i >= 0 && i < col && j >= 0 && j < row) //Issue
+    //                aliveNeighborsCount++;
+    //        }
+    //    }
 
-        //alive = nxtGenAlive;
-        nxtGenAlive = alive;
+    //    //alive = nxtGenAlive;
+    //    Debug.Log(aliveNeighborsCount);
+    //    nxtGenAlive = alive;
 
-         if (alive)
-         {
-            Debug.Log(aliveNeighborsCount);
-             if (aliveNeighborsCount < 2 || aliveNeighborsCount > 3)
-                 nxtGenAlive = false;
-             else
-                 nxtGenAlive = true;
-         }
-         else
-         {
-             if (aliveNeighborsCount == 3)
-                 nxtGenAlive = true;
-         }
-         UpdateStatus();
-    }
+    //     if (alive)
+    //     {
+    //         if (aliveNeighborsCount < 2 || aliveNeighborsCount > 3)
+    //             nxtGenAlive = false;
+    //         else
+    //             nxtGenAlive = true;
+    //     }
+    //     else
+    //     {
+    //         if (aliveNeighborsCount == 3)
+    //             nxtGenAlive = true;
+    //     }
+    //     UpdateStatus();
+    //}
 }
