@@ -14,17 +14,18 @@ public class GameOfLife : MonoBehaviour
 
     float cellSize = 0.15f; //Size of our cells
     [HideInInspector]public int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 25;
+    int spawnChancePercentage = 15;
 
-
+    [Range(1,60)]
+    public int frameRate = 4;
     private void Awake()
     {
         instance = this;
     }
+
     void Start()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 4;
 
         //Calculate our grid depending on size and cellSize
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize *
@@ -65,6 +66,7 @@ public class GameOfLife : MonoBehaviour
 
     void Update()
     {
+        Application.targetFrameRate = frameRate;
         //TODO: Calculate next generation
 
         for (int y = 0; y < numberOfRows; y++)
@@ -126,28 +128,5 @@ public class GameOfLife : MonoBehaviour
 
         return aliveNeighborsCount;
     }
-
-    //int GetAliveNeighborsCount(int x, int y)
-    //{
-    //    int aliveNeighborsCount = 0;
-
-    //    // Define the relative positions of all 8 neighbors
-    //    int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
-    //    int[] dy = { -1, 0, 1, -1, 1, -1, 0, 1 };
-
-    //    for (int i = 0; i < 8; i++)
-    //    {
-    //        int newX = x + dx[i];
-    //        int newY = y + dy[i];
-
-    //        // Check if the neighbor is within the grid bounds and is alive
-    //        if (newX >= 0 && newX < numberOfColums && newY >= 0 && newY < numberOfRows && cells[newX, newY].alive)
-    //        {
-    //            aliveNeighborsCount++;
-    //        }
-    //    }
-
-    //    return aliveNeighborsCount;
-    //}
 
 }

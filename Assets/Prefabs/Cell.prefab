@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8584112524859871594}
   - component: {fileID: 4807767758860862803}
-  - component: {fileID: 2705639887240090302}
+  - component: {fileID: 7234679223234359459}
   m_Layer: 0
   m_Name: Cell
   m_TagString: Untagged
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2747690628134850419, guid: 16037dbd798344f57a526d53d48f5ead, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.48443198, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2705639887240090302
+--- !u!114 &7234679223234359459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
