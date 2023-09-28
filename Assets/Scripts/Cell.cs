@@ -16,7 +16,7 @@ public class Cell : MonoBehaviour
         spriteRenderer.enabled = alive;
     }
 
-    //public void GetNeighborsCount(int x, int y)
+    //public void GetAliveNeighborsCount(int x, int y)
     //{
     //    int col = GameOfLife.instance.numberOfColums;
     //    int row = GameOfLife.instance.numberOfRows;

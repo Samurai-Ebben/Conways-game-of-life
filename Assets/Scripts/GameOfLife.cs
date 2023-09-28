@@ -72,7 +72,7 @@ public class GameOfLife : MonoBehaviour
             for (int x = 0; x < numberOfColums; x++)
             {
 
-                int aliveNeighbors = GetNeighborsCount(x, y);
+                int aliveNeighbors = GetAliveNeighborsCount(x, y);
                 cells[x, y].neighbors = aliveNeighbors;
                 if (cells[x, y].alive)
                 {
@@ -100,14 +100,14 @@ public class GameOfLife : MonoBehaviour
             for (int x = 0; x < numberOfColums; x++)
             {
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
-                //cells[x, y].GetNeighborsCount(x,y);
+                //cells[x, y].GetAliveNeighborsCount(x,y);
                 cells[x, y].UpdateStatus();
             }
         }
     }
 
 
-    int GetNeighborsCount(int x, int y)
+    int GetAliveNeighborsCount(int x, int y)
     {
         int aliveNeighborsCount = 0;
 
@@ -127,7 +127,7 @@ public class GameOfLife : MonoBehaviour
         return aliveNeighborsCount;
     }
 
-    //int GetNeighborsCount(int x, int y)
+    //int GetAliveNeighborsCount(int x, int y)
     //{
     //    int aliveNeighborsCount = 0;
 
