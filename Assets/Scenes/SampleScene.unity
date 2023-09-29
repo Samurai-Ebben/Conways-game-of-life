@@ -229,8 +229,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 3617949940739729246, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
+  fade: {fileID: 3880699513443007150, guid: c1939b05dfe0ae3428c0610e6cc5a533, type: 3}
+  cellSize: 0.15
   numberOfColums: 0
   numberOfRows: 0
+  frameRate: 4
+  timeBtwSpawns: 0
+  startTimeBtwSpawns: 0.2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

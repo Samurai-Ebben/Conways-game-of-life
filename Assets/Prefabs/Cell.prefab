@@ -100,3 +100,6 @@ MonoBehaviour:
   alive: 0
   nxtGenAlive: 0
   neighbors: 0
+  timeBtwSpawns: 0
+  startTimeBtwSpawns: 0.2
+  fade: {fileID: 3880699513443007150, guid: c1939b05dfe0ae3428c0610e6cc5a533, type: 3}

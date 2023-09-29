@@ -12,12 +12,15 @@ public class GameOfLife : MonoBehaviour
     public GameObject cellPrefab;
     Cell[,] cells;
 
-    float cellSize = 0.15f; //Size of our cells
+    public float cellSize = 0.15f; //Size of our cells
     [HideInInspector]public int numberOfColums, numberOfRows;
     int spawnChancePercentage = 15;
 
     [Range(1,60)]
     public int frameRate = 4;
+
+
+
     private void Awake()
     {
         instance = this;
@@ -28,6 +31,7 @@ public class GameOfLife : MonoBehaviour
         QualitySettings.vSyncCount = 0;
 
         //Calculate our grid depending on size and cellSize
+
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize *
             Camera.main.aspect * 2) / cellSize);
         numberOfRows = (int)Mathf.Floor(Camera.main.orthographicSize * 2 / cellSize);
@@ -74,18 +78,18 @@ public class GameOfLife : MonoBehaviour
             for (int x = 0; x < numberOfColums; x++)
             {
 
-                int aliveNeighbors = GetAliveNeighborsCount(x, y);
-                cells[x, y].neighbors = aliveNeighbors;
+                int aliveNeighborsCount = GetAliveNeighborsCount(x, y);
+                cells[x, y].neighbors = aliveNeighborsCount;
                 if (cells[x, y].alive)
                 {
-                    if (aliveNeighbors < 2 || aliveNeighbors > 3)
+                    if (aliveNeighborsCount < 2 || aliveNeighborsCount > 3)
                         cells[x, y].nxtGenAlive = false;
                     else
                         cells[x, y].nxtGenAlive = true;
                 }
                 else
                 {
-                    if (aliveNeighbors == 3)
+                    if (aliveNeighborsCount == 3)
                         cells[x, y].nxtGenAlive = true;
                     else
                         cells[x, y].nxtGenAlive = false;
@@ -93,9 +97,8 @@ public class GameOfLife : MonoBehaviour
             }
         }
 
-        // *Any live cell with fewer than two live aliveNeighbors dies.
+        // *Any live cell with fewer than two live aliveNeighborsCount dies.
         //TODO: update buffer
-        // issue all are alive nextgen. making the grid unchangable.
 
         for (int y = 0; y < numberOfRows; y++)
         {
@@ -109,20 +112,43 @@ public class GameOfLife : MonoBehaviour
     }
 
 
+    //int GetAliveNeighborsCount(int x, int y)
+    //{
+    //    int aliveNeighborsCount = 0;
+
+    //    for (int i = x - 1; i <= x + 1; i++)
+    //    {
+    //        for (int j = y - 1; j <= y + 1; j++)
+    //        {
+    //            //Skip me, ie the current cell.
+    //            if (i == x && j == y && cells[x, y].alive)
+    //                continue;
+
+    //            if (i >= 0 && i < numberOfColums && j >= 0 && j < numberOfRows && cells[i, j].alive)
+    //                aliveNeighborsCount++;
+    //        }
+    //    }
+
+    //    return aliveNeighborsCount;
+    //}
+
     int GetAliveNeighborsCount(int x, int y)
     {
         int aliveNeighborsCount = 0;
 
-        for (int i = x - 1; i <= x + 1; i++)
-        {
-            for (int j = y - 1; j <= y + 1; j++)
-            {
-                //Skip me, ie the current cell.
-                if (i == x && j == y && cells[x, y].alive)
-                    continue;
+        // Define relative positions of neighbors (including diagonal neighbors)
+        int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
+        int[] dy = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-                if (i >= 0 && i < numberOfColums && j >= 0 && j < numberOfRows && cells[i, j].alive)
-                    aliveNeighborsCount++;
+        for (int i = 0; i < 8; i++)
+        {
+            int newX = (x + dx[i] + numberOfColums) % numberOfColums;
+            int newY = (y + dy[i] + numberOfRows) % numberOfRows;
+
+            // Check if the neighbor is alive
+            if (cells[newX, newY].alive)
+            {
+                aliveNeighborsCount++;
             }
         }
 

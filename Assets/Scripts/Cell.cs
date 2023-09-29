@@ -9,10 +9,12 @@ public class Cell : MonoBehaviour
     [SerializeField] public  int neighbors;
     SpriteRenderer spriteRenderer;
 
+    
+
+
     public void UpdateStatus()
     {
         spriteRenderer ??= GetComponent<SpriteRenderer>();
         spriteRenderer.enabled = alive;
-
     }
 }
