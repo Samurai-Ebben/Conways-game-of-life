@@ -1,23 +1,18 @@
-using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Properties;
-//using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-
-public class GameOfLife : MonoBehaviour
+public class GameOfLifeV2 : MonoBehaviour
 {
-    public static GameOfLife instance;
+    public static GameOfLifeV2 instance;
     public GameObject cellPrefab;
     Cell[,] cells;
 
     public float cellSize = 0.15f; //Size of our cells
-    [HideInInspector]public int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 35;
+    [HideInInspector] public int numberOfColums, numberOfRows;
+    int spawnChancePercentage = 15;
 
-    [Range(1,60)]
+    [Range(1, 60)]
     public int frameRate = 4;
 
 
@@ -43,30 +38,30 @@ public class GameOfLife : MonoBehaviour
         //Create all objects
 
         //For each row
-        for (int y = 0; y < numberOfRows; y++)
-        {
-            //for each column in each row
-            for (int x = 0; x < numberOfColums; x++)
-            {
-                //Create our game cell objects, multiply by cellSize for correct world placement
-                Vector2 newPos = new Vector2(x * cellSize - Camera.main.orthographicSize *
-                    Camera.main.aspect,
-                    y * cellSize - Camera.main.orthographicSize);
+        //for (int y = 0; y < numberOfRows; y++)
+        //{
+        //    //for each column in each row
+        //    for (int x = 0; x < numberOfColums; x++)
+        //    {
+        //        //Create our game cell objects, multiply by cellSize for correct world placement
+        //        Vector2 newPos = new Vector2(x * cellSize - Camera.main.orthographicSize *
+        //            Camera.main.aspect,
+        //            y * cellSize - Camera.main.orthographicSize);
 
-                var newCell = Instantiate(cellPrefab, newPos, Quaternion.identity);
-                newCell.transform.localScale = Vector2.one * cellSize;
-                cells[x, y] = newCell.GetComponent<Cell>();
+        //        var newCell = Instantiate(cellPrefab, newPos, Quaternion.identity);
+        //        newCell.transform.localScale = Vector2.one * cellSize;
+        //        cells[x, y] = newCell.GetComponent<Cell>();
 
-                //Random check to see if it should be alive
-                if (Random.Range(0, 100) < spawnChancePercentage)
-                {
-                    cells[x, y].alive = true;
-                }
+        //        //Random check to see if it should be alive
+        //        if (Random.Range(0, 100) < spawnChancePercentage)
+        //        {
+        //            cells[x, y].alive = true;
+        //        }
 
-                cells[x, y].UpdateStatus();
-            }
-        }
-       
+        //        cells[x, y].UpdateStatus();
+        //    }
+        //}
+
     }
 
     void Update()
@@ -108,8 +103,6 @@ public class GameOfLife : MonoBehaviour
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
                 //cells[x, y].GetAliveNeighborsCount(x,y);
                 cells[x, y].UpdateStatus();
-
-
             }
         }
     }

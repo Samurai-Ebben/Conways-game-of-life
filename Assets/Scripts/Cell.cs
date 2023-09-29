@@ -6,15 +6,18 @@ public class Cell : MonoBehaviour
 {
     public bool alive;
     public bool nxtGenAlive;
-    [SerializeField] public  int neighbors;
+    public  int neighbors;
     SpriteRenderer spriteRenderer;
 
-    
-
+    Animator animator;
 
     public void UpdateStatus()
     {
+        animator ??= GetComponent<Animator>();
         spriteRenderer ??= GetComponent<SpriteRenderer>();
         spriteRenderer.enabled = alive;
+        animator.SetBool("isAlive", alive );
+        animator.SetBool("isNxt", nxtGenAlive);
+
     }
 }
