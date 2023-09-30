@@ -13,14 +13,15 @@ public class GameOfLife : MonoBehaviour
     public GameObject cellPrefab;
     Cell[,] cells;
 
-    public float cellSize = 0.15f; //Size of our cells
+    float cellSize = 0.1f; //Size of our cells
     [HideInInspector]public int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 35;
+    int spawnChancePercentage = 25;
 
     [Range(1,60)]
     public int frameRate = 4;
 
-
+    //int stillLifeCount = 0, oscillators2Pcount =0;
+    //bool stable = false;
 
     private void Awake()
     {
@@ -71,8 +72,27 @@ public class GameOfLife : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(stable);
         Application.targetFrameRate = frameRate;
         //TODO: Calculate next generation
+
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = -10;
+            var worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+            worldMousePos.x = Mathf.Clamp(worldMousePos.x, -numberOfColums, numberOfColums);
+            worldMousePos.y = Mathf.Clamp(worldMousePos.y, -numberOfRows, numberOfRows);
+
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, worldMousePos, Time.deltaTime * 2);
+        }
+        if (Input.mouseScrollDelta.y < 0) { 
+            ZoomOut();
+        }
+        else if(Input.mouseScrollDelta.y > 0)
+            ZoomIn();
 
         for (int y = 0; y < numberOfRows; y++)
         {
@@ -101,6 +121,20 @@ public class GameOfLife : MonoBehaviour
         // *Any live cell with fewer than two live aliveNeighborsCount dies.
         //TODO: update buffer
 
+        //TODO: Stability can be.
+        //stillLifeCount = 0;
+        //for (int y = 0; y < numberOfRows; y++)
+        //{
+        //    for (int x = 0; x < numberOfColums; x++)
+        //    {
+        //        //1- still lives.
+        //        if (cells[x, y].alive && cells[x, y].nxtGenAlive)
+        //        {
+        //            stillLifeCount++;
+        //        }
+        //    }
+        //}
+
         for (int y = 0; y < numberOfRows; y++)
         {
             for (int x = 0; x < numberOfColums; x++)
@@ -108,8 +142,6 @@ public class GameOfLife : MonoBehaviour
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
                 //cells[x, y].GetAliveNeighborsCount(x,y);
                 cells[x, y].UpdateStatus();
-
-
             }
         }
     }
@@ -144,6 +176,7 @@ public class GameOfLife : MonoBehaviour
         int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
         int[] dy = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
+        //2- repeating patterns(ships and blinkers).
         for (int i = 0; i < 8; i++)
         {
             int newX = (x + dx[i] + numberOfColums) % numberOfColums;
@@ -154,9 +187,20 @@ public class GameOfLife : MonoBehaviour
             {
                 aliveNeighborsCount++;
             }
+
         }
 
         return aliveNeighborsCount;
+    }
+
+    void ZoomIn()
+    {
+        Camera.main.orthographicSize -= 2;
+    }
+    void ZoomOut()
+    {
+        Camera.main.orthographicSize += 2;
+
     }
 
 }
