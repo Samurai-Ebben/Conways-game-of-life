@@ -13,11 +13,11 @@ public class GameOfLife : MonoBehaviour
     public GameObject cellPrefab;
     Cell[,] cells;
 
-    float cellSize = 0.2f; //Size of our cells
     [HideInInspector]public int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 15;
+    [SerializeField]float cellSize = 0.2f; //Size of our cells
+    [SerializeField]int spawnChancePercentage = 15;
 
-    [Range(1,160)]
+    [Range(1,260)]
     public int frameRate = 4;
 
     //int stillLifeCount = 0, oscillators2Pcount =0;

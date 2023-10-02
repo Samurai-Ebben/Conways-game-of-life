@@ -232,6 +232,8 @@ MonoBehaviour:
   cellPrefab: {fileID: 3880699513443007150, guid: c1939b05dfe0ae3428c0610e6cc5a533, type: 3}
   numberOfColums: 0
   numberOfRows: 0
+  cellSize: 0.05
+  spawnChancePercentage: 5
   frameRate: 3
 --- !u!114 &519420034
 MonoBehaviour:
