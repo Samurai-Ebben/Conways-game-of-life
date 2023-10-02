@@ -13,11 +13,11 @@ public class GameOfLife : MonoBehaviour
     public GameObject cellPrefab;
     Cell[,] cells;
 
-    float cellSize = 0.1f; //Size of our cells
+    float cellSize = 0.2f; //Size of our cells
     [HideInInspector]public int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 25;
+    int spawnChancePercentage = 15;
 
-    [Range(1,60)]
+    [Range(1,160)]
     public int frameRate = 4;
 
     //int stillLifeCount = 0, oscillators2Pcount =0;
@@ -74,20 +74,7 @@ public class GameOfLife : MonoBehaviour
     {
         //Debug.Log(stable);
         Application.targetFrameRate = frameRate;
-        //TODO: Calculate next generation
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-
-        //    Vector3 mousePos = Input.mousePosition;
-        //    mousePos.z = -10;
-        //    var worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
-        //    worldMousePos.x = Mathf.Clamp(worldMousePos.x, -numberOfColums, numberOfColums);
-        //    worldMousePos.y = Mathf.Clamp(worldMousePos.y, -numberOfRows, numberOfRows);
-
-        //    Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, worldMousePos, Time.deltaTime * 2);
-        //}
         if (Input.mouseScrollDelta.y < 0) { 
             ZoomOut();
         }
@@ -105,6 +92,7 @@ public class GameOfLife : MonoBehaviour
 
         }
 
+        //TODO: Calculate next generation
         for (int y = 0; y < numberOfRows; y++)
         {
             for (int x = 0; x < numberOfColums; x++)
@@ -180,9 +168,12 @@ public class GameOfLife : MonoBehaviour
             int newX = (x + neighborsX[i] + numberOfColums) % numberOfColums;
             int newY = (y + neighborsY[i] + numberOfRows) % numberOfRows;
 
+            //cells[x, y].paSy.Play();
             // Check if the neighbor is alive and wrap
             if (cells[newX, newY].alive)
             {
+                //cells[x, y].paSy.Stop();
+
                 aliveNeighborsCount++;
             }
 

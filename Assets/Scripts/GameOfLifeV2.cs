@@ -12,7 +12,7 @@ public class GameOfLifeV2 : MonoBehaviour
     [HideInInspector] public int numberOfColums, numberOfRows;
     int spawnChancePercentage = 15;
 
-    [Range(1, 60)]
+    [Range(1, 260)]
     public int frameRate = 4;
 
 

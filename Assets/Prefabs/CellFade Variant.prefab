@@ -12,10 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: CellFade Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3617949940739729246, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7234679223234359459, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
       propertyPath: fade
       value: 
       objectReference: {fileID: 3880699513443007150}
+    - target: {fileID: 7234679223234359459, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
+      propertyPath: deadSprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8584112524859871594, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.15
