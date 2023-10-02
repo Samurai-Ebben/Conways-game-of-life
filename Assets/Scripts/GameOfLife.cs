@@ -124,9 +124,9 @@ public class GameOfLife : MonoBehaviour
         {
             for (int x = 0; x < numberOfColums; x++)
             {
+                cells[x, y].UpdateStatus();
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
                 //cells[x, y].GetAliveNeighborsCount(x,y);
-                cells[x, y].UpdateStatus();
             }
         }
         //TODO: Stability can be.
