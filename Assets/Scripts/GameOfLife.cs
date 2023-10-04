@@ -19,12 +19,16 @@ public class GameOfLife : MonoBehaviour
 
     [Range(1,560)]
     public int frameRate = 4;
-    int genNum = 1;
 
-    int currPopulation;
-    int nextPopulation;
+    int genNum=0;
+
+    int prevGeneration = -1;
+    int currGeneration = 0;
+    int stableGenCount = 0;
+    int maxStableGen = 5;
+
     //int stillLifeCount = 0, oscillators2Pcount =0;
-    //bool stable = false;
+    bool stable = false;
 
     private void Awake()
     {
@@ -77,25 +81,10 @@ public class GameOfLife : MonoBehaviour
     {
         //Debug.Log(stable);
         Application.targetFrameRate = frameRate;
-
-        if (Input.mouseScrollDelta.y < 0) { 
-            ZoomOut();
-        }
-        else if(Input.mouseScrollDelta.y > 0)
-        {
-            ZoomIn();
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = -10;
-            var worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            worldMousePos.x = Mathf.Clamp(worldMousePos.x, -numberOfColums, numberOfColums);
-            worldMousePos.y = Mathf.Clamp(worldMousePos.y, -numberOfRows, numberOfRows);
-
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, worldMousePos, Time.deltaTime * 2);
-
-        }
-
+        ZoomInNOut();
         //TODO: Calculate next generation
+
+
         for (int y = 0; y < numberOfRows; y++)
         {
             for (int x = 0; x < numberOfColums; x++)
@@ -109,7 +98,7 @@ public class GameOfLife : MonoBehaviour
                         cells[x, y].nxtGenAlive = false;
                     else
                         cells[x, y].nxtGenAlive = true;
-                    nextPopulation++;
+
                 }
                 else
                 {
@@ -118,32 +107,79 @@ public class GameOfLife : MonoBehaviour
                     else
                         cells[x, y].nxtGenAlive = false;
                 }
-                if(currPopulation == nextPopulation && genNum > 5)
-                {
-                    var temp = genNum;
-                    genNum = temp;
-                    Debug.Log("The game is stabel at generation number: " + 
-                        (genNum - 5));
-                }
             }
         }
 
-        // *Any live cell with fewer than two live aliveNeighborsCount dies.
         //TODO: update buffer
+        CheckStability();
+        UpdateCells();
 
+
+
+    }
+
+    void CheckStability()
+    {
+        for (int y = 0; y < numberOfRows; y++)
+        {
+            for (int x = 0; x < numberOfColums; x++)
+            {
+                if (cells[x, y].alive)
+                    prevGeneration++;
+                if (cells[x, y].nxtGenAlive)
+                    currGeneration++;
+            }
+        }
+        if (prevGeneration == currGeneration)
+            stableGenCount++;
+        else
+            stableGenCount = 0;
+
+        prevGeneration = currGeneration;
+        if(stableGenCount >= maxStableGen && !stable)
+        {
+            int stableNum = genNum - maxStableGen;
+            Debug.Log("The game is stable at generation number: " + stableNum);
+            stable = true;
+
+        }
+        
+    }
+
+    private void UpdateCells()
+    {
         for (int y = 0; y < numberOfRows; y++)
         {
             for (int x = 0; x < numberOfColums; x++)
             {
                 cells[x, y].UpdateStatus();
-                if (cells[x, y].alive)
-                    currPopulation ++;
+
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
-                genNum++;
-                //cells[x, y].GetAliveNeighborsCount(x,y);
             }
         }
-        //TODO: Stability can be.
+        //if (!isStable)
+        genNum++;
+    }
+
+    private void ZoomInNOut()
+    {
+        if (Input.mouseScrollDelta.y < 0)
+        {
+            ZoomOut();
+        }
+        else if (Input.mouseScrollDelta.y > 0)
+        {
+            ZoomIn();
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = -10;
+            var worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+            worldMousePos.x = Mathf.Clamp(worldMousePos.x, -numberOfColums, numberOfColums);
+            worldMousePos.y = Mathf.Clamp(worldMousePos.y, -numberOfRows, numberOfRows);
+
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, worldMousePos, Time.deltaTime * 2);
+
+        }
     }
 
 
