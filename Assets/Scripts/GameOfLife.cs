@@ -17,9 +17,12 @@ public class GameOfLife : MonoBehaviour
     [SerializeField]float cellSize = 0.2f; //Size of our cells
     [SerializeField]int spawnChancePercentage = 15;
 
-    [Range(1,260)]
+    [Range(1,560)]
     public int frameRate = 4;
+    int genNum = 1;
 
+    int currPopulation;
+    int nextPopulation;
     //int stillLifeCount = 0, oscillators2Pcount =0;
     //bool stable = false;
 
@@ -63,7 +66,7 @@ public class GameOfLife : MonoBehaviour
                 {
                     cells[x, y].alive = true;
                 }
-
+                 
                 cells[x, y].UpdateStatus();
             }
         }
@@ -106,6 +109,7 @@ public class GameOfLife : MonoBehaviour
                         cells[x, y].nxtGenAlive = false;
                     else
                         cells[x, y].nxtGenAlive = true;
+                    nextPopulation++;
                 }
                 else
                 {
@@ -113,6 +117,13 @@ public class GameOfLife : MonoBehaviour
                         cells[x, y].nxtGenAlive = true;
                     else
                         cells[x, y].nxtGenAlive = false;
+                }
+                if(currPopulation == nextPopulation && genNum > 5)
+                {
+                    var temp = genNum;
+                    genNum = temp;
+                    Debug.Log("The game is stabel at generation number: " + 
+                        (genNum - 5));
                 }
             }
         }
@@ -125,7 +136,10 @@ public class GameOfLife : MonoBehaviour
             for (int x = 0; x < numberOfColums; x++)
             {
                 cells[x, y].UpdateStatus();
+                if (cells[x, y].alive)
+                    currPopulation ++;
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
+                genNum++;
                 //cells[x, y].GetAliveNeighborsCount(x,y);
             }
         }

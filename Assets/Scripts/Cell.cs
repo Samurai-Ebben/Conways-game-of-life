@@ -9,15 +9,11 @@ public class Cell : MonoBehaviour
     public bool alive;
     public bool nxtGenAlive;
     public int neighbors;
-    SpriteRenderer spriteRenderer;
-    ParticleSystem paSy;
     public Sprite deadSprite;
     public Sprite livSprite;
 
-
-    private void Start()
-    {
-    }
+    SpriteRenderer spriteRenderer;
+    ParticleSystem paSy;
 
     public void UpdateStatus()
     {
@@ -28,8 +24,7 @@ public class Cell : MonoBehaviour
 
         if (alive && !nxtGenAlive)
         {
-            //Color newC = new Color(1,1,1, 0.5f);
-            //spriteRenderer.color += newC;
+
             paSy.Play();
             spriteRenderer.sprite = null;
             //transform.localScale *= .5f;
