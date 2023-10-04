@@ -82,9 +82,8 @@ public class GameOfLife : MonoBehaviour
         //Debug.Log(stable);
         Application.targetFrameRate = frameRate;
         ZoomInNOut();
+
         //TODO: Calculate next generation
-
-
         for (int y = 0; y < numberOfRows; y++)
         {
             for (int x = 0; x < numberOfColums; x++)
@@ -113,8 +112,6 @@ public class GameOfLife : MonoBehaviour
         //TODO: update buffer
         CheckStability();
         UpdateCells();
-
-
 
     }
 
