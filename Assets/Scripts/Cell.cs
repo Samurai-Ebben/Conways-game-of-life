@@ -15,19 +15,27 @@ public class Cell : MonoBehaviour
     SpriteRenderer spriteRenderer;
     ParticleSystem paSy;
 
+    public void StartStatus()
+    {
+        spriteRenderer ??= GetComponent<SpriteRenderer>();
+        //spriteRenderer.enabled = alive;
+        if (alive)
+            spriteRenderer.sprite = livSprite;
+        else
+            spriteRenderer.sprite = null;
+
+    }
+
     public void UpdateStatus()
     {
         spriteRenderer ??= GetComponent<SpriteRenderer>();
         paSy ??= GetComponent<ParticleSystem>();
-        //spriteRenderer.enabled = alive;
 
 
         if (alive && !nxtGenAlive)
         {
-
             paSy.Play();
             spriteRenderer.sprite = null;
-            //transform.localScale *= .5f;
         }
         if (!alive && !nxtGenAlive)
         {
@@ -36,9 +44,8 @@ public class Cell : MonoBehaviour
         if (nxtGenAlive)
         {
             spriteRenderer.sprite = livSprite;
-        }
-        //if (!alive && !nxtGenAlive)
-        //    spriteRenderer.sprite = deadSprite;
+            paSy.Stop();
 
+        }
     }
 }

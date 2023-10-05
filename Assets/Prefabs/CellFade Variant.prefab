@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4807767758860862803, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7234679223234359459, guid: 77652d0a0212a3242a8c8ce665a707ca, type: 3}
       propertyPath: fade
       value: 

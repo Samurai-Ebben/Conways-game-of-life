@@ -27,6 +27,11 @@ public class GameOfLife : MonoBehaviour
     int stableGenCount = 0;
     int maxStableGen = 5;
 
+
+
+    Vector3 mousePos; 
+    Vector3 worldMousePos;
+
     //int stillLifeCount = 0, oscillators2Pcount =0;
     bool stable = false;
 
@@ -38,6 +43,7 @@ public class GameOfLife : MonoBehaviour
     void Start()
     {
         QualitySettings.vSyncCount = 0;
+
 
         //Calculate our grid depending on size and cellSize
 
@@ -64,25 +70,60 @@ public class GameOfLife : MonoBehaviour
                 var newCell = Instantiate(cellPrefab, newPos, Quaternion.identity);
                 newCell.transform.localScale = Vector2.one * cellSize;
                 cells[x, y] = newCell.GetComponent<Cell>();
+                cells[x, y].alive = false;
 
                 //Random check to see if it should be alive
-                if (Random.Range(0, 100) < spawnChancePercentage)
-                {
-                    cells[x, y].alive = true;
-                }
-                 
+                //Change this and put it in update.
+                //if (Random.Range(0, 100) < spawnChancePercentage)
+                //{
+                //    cells[x, y].alive = true;
+                //}
+
                 cells[x, y].UpdateStatus();
             }
         }
        
+        Application.targetFrameRate = 1;
+        Time.timeScale = 0;
+
     }
+
 
     void Update()
     {
-        //Debug.Log(stable);
-        Application.targetFrameRate = frameRate;
         ZoomInNOut();
 
+        //TODO: Get mouse pos when cliked, alive cell on pos.
+
+        if (Input.GetMouseButtonDown(0) && Time.deltaTime<1)
+        {
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            int gridX = Mathf.Clamp((int)((mouseWorldPos.x + Camera.main.orthographicSize * Camera.main.aspect)
+                / cellSize), 0, numberOfColums - 1);
+            int gridY = Mathf.Clamp((int)((mouseWorldPos.y + Camera.main.orthographicSize) / cellSize), 0, numberOfRows - 1);
+
+            // Toggle the state of the clicked cell
+            cells[gridX, gridY].alive = !cells[gridX, gridY].alive;
+            cells[gridX, gridY].StartStatus();
+        }
+
+            
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Time.timeScale = 1;
+        }
+        if (Time.timeScale < 1) return;
+
+        Application.targetFrameRate = frameRate;
+        CalculateNextGen();
+        CheckStability();
+        UpdateCells();
+
+
+    }
+
+    private void CalculateNextGen()
+    {
         //TODO: Calculate next generation
         for (int y = 0; y < numberOfRows; y++)
         {
@@ -108,11 +149,6 @@ public class GameOfLife : MonoBehaviour
                 }
             }
         }
-
-        //TODO: update buffer
-        CheckStability();
-        UpdateCells();
-
     }
 
     void CheckStability()
@@ -140,7 +176,6 @@ public class GameOfLife : MonoBehaviour
             stable = true;
 
         }
-        
     }
 
     private void UpdateCells()
@@ -167,9 +202,8 @@ public class GameOfLife : MonoBehaviour
         else if (Input.mouseScrollDelta.y > 0)
         {
             ZoomIn();
-            Vector3 mousePos = Input.mousePosition;
             mousePos.z = -10;
-            var worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+            
 
             worldMousePos.x = Mathf.Clamp(worldMousePos.x, -numberOfColums, numberOfColums);
             worldMousePos.y = Mathf.Clamp(worldMousePos.y, -numberOfRows, numberOfRows);
