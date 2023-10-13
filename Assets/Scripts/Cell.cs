@@ -18,7 +18,7 @@ public class Cell : MonoBehaviour
     public void StartStatus()
     {
         spriteRenderer ??= GetComponent<SpriteRenderer>();
-        //spriteRenderer.enabled = alive;
+
         if (alive)
             spriteRenderer.sprite = livSprite;
         else

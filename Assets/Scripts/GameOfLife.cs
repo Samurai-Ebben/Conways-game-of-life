@@ -1,6 +1,7 @@
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Properties;
 //using Unity.VisualScripting;
 using UnityEngine;
@@ -9,17 +10,23 @@ using UnityEngine.UIElements;
 
 public class GameOfLife : MonoBehaviour
 {
+    // The assignement is about programming and problem solvig, i focused on
+    // that rather than wasting time on design knowing im no really good at it
+    // the slider of speed along with the cell size are in the inspector.
+
     public static GameOfLife instance;
     public GameObject cellPrefab;
     Cell[,] cells;
 
     [HideInInspector]public int numberOfColums, numberOfRows;
-    [SerializeField]float cellSize = 0.2f; //Size of our cells
     [SerializeField]int spawnChancePercentage = 15;
-
+    [Header("YOUR CONTROLS")]
+    [Range(0f, 1f)]
+    [SerializeField]float cellSize = 0.2f; //Size of our cells
     [Range(1,560)]
     public int frameRate = 4;
 
+    public TextMeshProUGUI txt;
     int genNum=0;
 
     int prevGeneration = -1;
@@ -32,7 +39,6 @@ public class GameOfLife : MonoBehaviour
     Vector3 mousePos; 
     Vector3 worldMousePos;
 
-    //int stillLifeCount = 0, oscillators2Pcount =0;
     bool stable = false;
 
     private void Awake()
@@ -44,7 +50,7 @@ public class GameOfLife : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
 
-
+        txt.text = "Choose a starting point";
         //Calculate our grid depending on size and cellSize
 
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize *
@@ -72,12 +78,12 @@ public class GameOfLife : MonoBehaviour
                 cells[x, y] = newCell.GetComponent<Cell>();
                 cells[x, y].alive = false;
 
-                //Random check to see if it should be alive
-                //Change this and put it in update.
-                //if (Random.Range(0, 100) < spawnChancePercentage)
-                //{
-                //    cells[x, y].alive = true;
-                //}
+                /*Random check to see if it should be alive
+                Change this and put it in update.
+                if (Random.Range(0, 100) < spawnChancePercentage)
+                {
+                    cells[x, y].alive = true;
+                }*/
 
                 cells[x, y].UpdateStatus();
             }
@@ -111,6 +117,7 @@ public class GameOfLife : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             Time.timeScale = 1;
+            txt.text = "";
         }
         if (Time.timeScale < 1) return;
 
@@ -124,7 +131,6 @@ public class GameOfLife : MonoBehaviour
 
     private void CalculateNextGen()
     {
-        //TODO: Calculate next generation
         for (int y = 0; y < numberOfRows; y++)
         {
             for (int x = 0; x < numberOfColums; x++)
@@ -169,12 +175,12 @@ public class GameOfLife : MonoBehaviour
             stableGenCount = 0;
 
         prevGeneration = currGeneration;
+
         if(stableGenCount >= maxStableGen && !stable)
         {
             int stableNum = genNum - maxStableGen;
-            Debug.Log("The game is stable at generation number: " + stableNum);
+            txt.text = "Game is stable at generation number: " + stableNum.ToString();
             stable = true;
-
         }
     }
 
@@ -189,7 +195,6 @@ public class GameOfLife : MonoBehaviour
                 cells[x, y].alive = cells[x, y].nxtGenAlive;
             }
         }
-        //if (!isStable)
         genNum++;
     }
 
@@ -249,15 +254,12 @@ public class GameOfLife : MonoBehaviour
             int newX = (x + neighborsX[i] + numberOfColums) % numberOfColums;
             int newY = (y + neighborsY[i] + numberOfRows) % numberOfRows;
 
-            //cells[x, y].paSy.Play();
             // Check if the neighbor is alive and wrap
             if (cells[newX, newY].alive)
             {
-                //cells[x, y].paSy.Stop();
 
                 aliveNeighborsCount++;
             }
-
         }
 
         return aliveNeighborsCount;
@@ -267,10 +269,10 @@ public class GameOfLife : MonoBehaviour
     {
         Camera.main.orthographicSize --;
     }
+
     void ZoomOut()
     {
         Camera.main.orthographicSize ++;
-
     }
 
 }
