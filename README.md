@@ -1,3 +1,3 @@
 # Conway's game of life
 
-![](https://github.com/Conways-game-of-life/GameOfLifeGIF.gif)
+![Gif of gameoflife](GameOfLifeGIF.gif)
